@@ -1,5 +1,19 @@
 project(BlueBerryExampleLauncher)
 
+set(MITK_SUPERBUILD_DIR "/home/jwu/mywork08/MITK/build_release")
+set(QT_DIR "/home/jwu")
+
+set(CMAKE_PREFIX_PATH
+        "${MITK_SUPERBUILD_DIR}/MITK-build"
+        "${MITK_SUPERBUILD_DIR}/ep/src/VTK/CMake/"
+        "${QT_DIR}/Qt/5.15.2/gcc_64/lib/cmake/Qt5"
+        )
+
+find_package(MITK CONFIG REQUIRED)
+find_package(OpenMP REQUIRED)
+find_package(ITK REQUIRED)
+find_package(Qt5 5.12 COMPONENTS Widgets Charts Svg REQUIRED)
+
 set(_source_files
   BlueBerryExampleLauncher.cpp
   BlueBerryExampleLauncherDialog.cpp
@@ -31,6 +45,8 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}
 
 set(_plugins_for_all_demos
 )
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ".")
 
 file(GLOB _demo_configurations Configurations/*.cmake)
 

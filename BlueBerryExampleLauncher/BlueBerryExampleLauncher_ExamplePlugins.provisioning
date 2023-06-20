@@ -1,0 +1,4 @@
+START file:///home/jwu/mywork08/MITK/build_release/ep/src/CTK-build/CTK-build/bin/liborg_commontk_configadmin.so
+START file:///home/jwu/mywork08/MITK/build_release/MITK-build/lib/plugins/liborg_mitk_gui_qt_extapplication.so
+START file:///home/jwu/mywork08/MITK/build_release/MITK-build/lib/plugins/liborg_mitk_gui_qt_datamanager.so
+START file:///home/jwu/mywork08/MITK/build_release/MITK-build/lib/plugins/liborg_mitk_gui_qt_stdmultiwidgeteditor.so
