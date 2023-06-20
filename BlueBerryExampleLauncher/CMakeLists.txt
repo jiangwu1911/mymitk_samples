@@ -12,7 +12,7 @@ set(CMAKE_PREFIX_PATH
 find_package(MITK CONFIG REQUIRED)
 find_package(OpenMP REQUIRED)
 find_package(ITK REQUIRED)
-find_package(Qt5 5.12 COMPONENTS Widgets Charts Svg REQUIRED)
+find_package(Qt5 5.12 COMPONENTS Widgets Charts Svg WebEngine REQUIRED)
 
 set(_source_files
   BlueBerryExampleLauncher.cpp
