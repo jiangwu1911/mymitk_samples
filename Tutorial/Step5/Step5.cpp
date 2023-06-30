@@ -20,7 +20,6 @@ found in the LICENSE file.
 #include "mitkStandaloneDataStorage.h"
 
 #include "mitkPointSet.h"
-// NEW INCLUDE
 #include "mitkPointSetDataInteractor.h"
 
 #include <QApplication>
