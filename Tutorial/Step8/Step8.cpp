@@ -60,17 +60,15 @@ void Step8::SetupWidgets()
   // Add the displayed views to the DataStorage to see their positions in 2D and 3D
   multiWidget->AddPlanesToDataStorage();
 
-  multiWidget->ResetCrosshair();
-
   //*************************************************************************
   // Part Ib: create and initialize LevelWindowWidget
   //*************************************************************************
-  //QmitkLevelWindowWidget *levelWindowWidget = new QmitkLevelWindowWidget(viewParent);
+  QmitkLevelWindowWidget *levelWindowWidget = new QmitkLevelWindowWidget(viewParent);
 
-  //hlayout->addWidget(levelWindowWidget);
+  hlayout->addWidget(levelWindowWidget);
 
   // Tell the levelWindowWidget which DataStorage to access
-  //levelWindowWidget->SetDataStorage(m_DataStorage);
+  levelWindowWidget->SetDataStorage(m_DataStorage);
 
 }
 /**

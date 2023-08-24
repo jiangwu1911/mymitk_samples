@@ -3,8 +3,11 @@ cmake_minimum_required(VERSION 3.17 FATAL_ERROR)
 project(step8)
 
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(MITK_SUPERBUILD_DIR "/home/jwu/mywork08/MITK/build_release")
+#set(MITK_SUPERBUILD_DIR "/home/jwu/mywork08/MITK/build_release")
+set(MITK_SUPERBUILD_DIR "/home/jwu/mywork08/MITK_build_release")
 set(QT_DIR "/home/jwu")
 
 set(CMAKE_PREFIX_PATH
@@ -31,5 +34,5 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         MitkCore
         MitkQtWidgetsExt
         Qt5::Widgets
-        #${ITK_LIBRARIES}
+        ${ITK_LIBRARIES}
         )

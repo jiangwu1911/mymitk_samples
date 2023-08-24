@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.17 FATAL_ERROR)
 
 project(step3)
 
-set(MITK_SUPERBUILD_DIR "/home/jwu/mywork08/MITK/build")
+set(MITK_SUPERBUILD_DIR "/home/jwu/mywork08/MITK_build_release")
 set(QT_DIR "/home/jwu")
 
 set(CMAKE_PREFIX_PATH
