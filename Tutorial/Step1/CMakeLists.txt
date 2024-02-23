@@ -8,7 +8,7 @@ set(QT_DIR "/home/jwu")
 set(CMAKE_PREFIX_PATH
         "${MITK_SUPERBUILD_DIR}/MITK-build"
         "${MITK_SUPERBUILD_DIR}/ep/src/VTK/CMake/"
-        "${QT_DIR}/Qt/5.15.11/gcc_64/lib/cmake/Qt5"
+        "${QT_DIR}/Qt/6.6.2/gcc_64/lib/cmake/Qt6"
         )
 
 find_package(MITK CONFIG REQUIRED)

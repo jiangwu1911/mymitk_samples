@@ -4,13 +4,13 @@ project(step6)
 
 set(CMAKE_AUTOMOC ON)
 
-set(MITK_SUPERBUILD_DIR "/home/jwu/mywork08/MITK/build_release")
+set(MITK_SUPERBUILD_DIR "/home/jwu/mywork09/MITK_build")
 set(QT_DIR "/home/jwu")
 
 set(CMAKE_PREFIX_PATH
         "${MITK_SUPERBUILD_DIR}/MITK-build"
         "${MITK_SUPERBUILD_DIR}/ep/src/VTK/CMake/"
-        "${QT_DIR}/Qt/5.15.2/gcc_64/lib/cmake/Qt5"
+        "${QT_DIR}/Qt/5.15.11/gcc_64/lib/cmake/Qt5"
         )
 
 find_package(MITK CONFIG REQUIRED)
@@ -30,5 +30,5 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         MitkCore
         MitkQtWidgetsExt
         Qt5::Widgets
-        #${ITK_LIBRARIES}
+        ${ITK_LIBRARIES}
         )
