@@ -17,5 +17,5 @@ add_executable(${PROJECT_NAME} Step1.cpp)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
     MitkCore
-    MitkQtWidgetsExt
+    MitkQtWidgets
 )
