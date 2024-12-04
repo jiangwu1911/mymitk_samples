@@ -35,118 +35,113 @@ found in the LICENSE file.
 //## is that images are not displayed in the 3D view. For this example,
 //## we want volume-rendering, thus we switch it on by setting
 //## the Boolean-property "volumerendering" to "true".
-int main(int argc, char *argv[])
-{
-  QApplication qtapplication(argc, argv);
-  if (argc < 2)
-  {
-    fprintf(
-      stderr, "Usage:   %s [filename1] [filename2] ...\n\n", itksys::SystemTools::GetFilenameName(argv[0]).c_str());
-    return 1;
-  }
-
-  // Register Qmitk-dependent global instances
-  QmitkRegisterClasses();
-
-  //*************************************************************************
-  // Part I: Basic initialization
-  //*************************************************************************
-
-  // Create a DataStorage
-  mitk::StandaloneDataStorage::Pointer ds = mitk::StandaloneDataStorage::New();
-
-  //*************************************************************************
-  // Part II: Create some data by reading files
-  //*************************************************************************
-  int i;
-  for (i = 1; i < argc; ++i)
-  {
-    // For testing
-    if (strcmp(argv[i], "-testing") == 0)
-      continue;
-
-    //*********************************************************************
-    // Part III: Put the data into the datastorage
-    //*********************************************************************
-    // Load datanode (eg. many image formats, surface formats, etc.)
-    mitk::StandaloneDataStorage::SetOfObjects::Pointer dataNodes = mitk::IOUtil::Load(argv[i], *ds);
-
-    if (dataNodes->empty())
-    {
-      fprintf(stderr, "Could not open file %s \n\n", argv[i]);
-      exit(2);
-    }
-    mitk::DataNode::Pointer node = dataNodes->at(0);
-
-    // *********************************************************
-    // ********************* START OF NEW PART 1 (Step 3a) *****
-    // *********************************************************
-
-    //*********************************************************************
-    // Part IV: We want all images to be volume-rendered
-    //*********************************************************************
-
-    // Check if the data is an image by dynamic_cast-ing the data
-    // contained in the node. Warning: dynamic_cast's are rather slow,
-    // do not use it too often!
-    mitk::Image::Pointer image = dynamic_cast<mitk::Image *>(node->GetData());
-    if (image.IsNotNull())
-    {
-      // Set the property "volumerendering" to the Boolean value "true"
-      node->SetProperty("volumerendering", mitk::BoolProperty::New(true));
-
-      // Create a transfer function to assign optical properties (color and opacity) to grey-values of the data
-      mitk::TransferFunction::Pointer tf = mitk::TransferFunction::New();
-      tf->InitializeByMitkImage(image);
-
-      // Set the color transfer function AddRGBPoint(double x, double r, double g, double b)
-      tf->GetColorTransferFunction()->AddRGBPoint(tf->GetColorTransferFunction()->GetRange()[0], 1.0, 0.0, 0.0);
-      tf->GetColorTransferFunction()->AddRGBPoint(tf->GetColorTransferFunction()->GetRange()[1], 1.0, 1.0, 0.0);
-
-      // Set the piecewise opacity transfer function AddPoint(double x, double y)
-      tf->GetScalarOpacityFunction()->AddPoint(0, 0);
-      tf->GetScalarOpacityFunction()->AddPoint(tf->GetColorTransferFunction()->GetRange()[1], 1);
-
-      node->SetProperty("TransferFunction", mitk::TransferFunctionProperty::New(tf.GetPointer()));
+int main(int argc, char *argv[]) {
+    QApplication qtapplication(argc, argv);
+    if (argc < 2) {
+        fprintf(stderr, "Usage:   %s [filename1] [filename2] ...\n\n",
+                itksys::SystemTools::GetFilenameName(argv[0]).c_str());
+        return 1;
     }
 
+    // Register Qmitk-dependent global instances
+    QmitkRegisterClasses();
+
+    //*************************************************************************
+    // Part I: Basic initialization
+    //*************************************************************************
+
+    // Create a DataStorage
+    mitk::StandaloneDataStorage::Pointer ds = mitk::StandaloneDataStorage::New();
+
+    //*************************************************************************
+    // Part II: Create some data by reading files
+    //*************************************************************************
+    int i;
+    for (i = 1; i < argc; ++i) {
+        // For testing
+        if (strcmp(argv[i], "-testing") == 0)
+            continue;
+
+        //*********************************************************************
+        // Part III: Put the data into the datastorage
+        //*********************************************************************
+        // Load datanode (eg. many image formats, surface formats, etc.)
+        mitk::StandaloneDataStorage::SetOfObjects::Pointer dataNodes = mitk::IOUtil::Load(argv[i], *ds);
+
+        if (dataNodes->empty()) {
+            fprintf(stderr, "Could not open file %s \n\n", argv[i]);
+            exit(2);
+        }
+        mitk::DataNode::Pointer node = dataNodes->at(0);
+
+        // *********************************************************
+        // ********************* START OF NEW PART 1 (Step 3a) *****
+        // *********************************************************
+
+        //*********************************************************************
+        // Part IV: We want all images to be volume-rendered
+        //*********************************************************************
+
+        // Check if the data is an image by dynamic_cast-ing the data
+        // contained in the node. Warning: dynamic_cast's are rather slow,
+        // do not use it too often!
+        mitk::Image::Pointer image = dynamic_cast<mitk::Image *>(node->GetData());
+        if (image.IsNotNull()) {
+            // Set the property "volumerendering" to the Boolean value "true"
+            node->SetProperty("volumerendering", mitk::BoolProperty::New(true));
+
+            // Create a transfer function to assign optical properties (color and opacity) to grey-values of the data
+            mitk::TransferFunction::Pointer tf = mitk::TransferFunction::New();
+            tf->InitializeByMitkImage(image);
+
+            // Set the color transfer function AddRGBPoint(double x, double r, double g, double b)
+            tf->GetColorTransferFunction()->AddRGBPoint(tf->GetColorTransferFunction()->GetRange()[0], 1.0, 0.0, 0.0);
+            tf->GetColorTransferFunction()->AddRGBPoint(tf->GetColorTransferFunction()->GetRange()[1], 1.0, 1.0, 0.0);
+
+            // Set the piecewise opacity transfer function AddPoint(double x, double y)
+            tf->GetScalarOpacityFunction()->AddPoint(0, 0);
+            tf->GetScalarOpacityFunction()->AddPoint(tf->GetColorTransferFunction()->GetRange()[1], 1);
+
+            node->SetProperty("TransferFunction", mitk::TransferFunctionProperty::New(tf.GetPointer()));
+        }
+
+        // *********************************************************
+        // ******************* END OF NEW PART 1 (Step 3a) *********
+        // *********************************************************
+    }
+
+    //*************************************************************************
+    // Part V: Create window and pass the tree to it
+    //*************************************************************************
+
+    // Create a renderwindow
+    QmitkRenderWindow renderWindow;
+
+    // Tell the renderwindow which (part of) the datastorage to render
+    renderWindow.GetRenderer()->SetDataStorage(ds);
+
     // *********************************************************
-    // ******************* END OF NEW PART 1 (Step 3a) *********
+    // ****************** START OF NEW PART 2 (Step 3b) ********
     // *********************************************************
-  }
+    // Use it as a 3D view!
+    renderWindow.GetRenderer()->SetMapperID(mitk::BaseRenderer::Standard3D);
 
-  //*************************************************************************
-  // Part V: Create window and pass the tree to it
-  //*************************************************************************
+    // Reposition the camera to include all visible actors
+    renderWindow.GetRenderer()->GetVtkRenderer()->ResetCamera();
 
-  // Create a renderwindow
-  QmitkRenderWindow renderWindow;
+    // *********************************************************
+    // ******************* END OF NEW PART 2 (Step 3b) *********
+    // *********************************************************
 
-  // Tell the renderwindow which (part of) the datastorage to render
-  renderWindow.GetRenderer()->SetDataStorage(ds);
+    //*************************************************************************
+    // Part VI: Qt-specific initialization
+    //*************************************************************************
+    renderWindow.show();
+    renderWindow.resize(256, 256);
 
-  // *********************************************************
-  // ****************** START OF NEW PART 2 (Step 3b) ********
-  // *********************************************************
-  // Use it as a 3D view!
-  renderWindow.GetRenderer()->SetMapperID(mitk::BaseRenderer::Standard3D);
+    mitk::RenderingManager::GetInstance()->RequestUpdateAll();
 
-  // Reposition the camera to include all visible actors
-  renderWindow.GetRenderer()->GetVtkRenderer()->ResetCamera();
-
-  // *********************************************************
-  // ******************* END OF NEW PART 2 (Step 3b) *********
-  // *********************************************************
-
-  //*************************************************************************
-  // Part VI: Qt-specific initialization
-  //*************************************************************************
-  renderWindow.show();
-  renderWindow.resize(256, 256);
-
-  mitk::RenderingManager::GetInstance()->RequestUpdateAll();
-
-  return qtapplication.exec();
+    return qtapplication.exec();
 }
 
 /**
